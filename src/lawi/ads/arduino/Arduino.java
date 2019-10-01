@@ -8,6 +8,8 @@ public class Arduino {
     private Encoder encoder;
     private Decoder decoder;
 
+    private boolean connectionOpened = false;
+
     public Arduino(String portDescription, int baudRate, int P, int lenData, int blockSeparator){
         arduinoConnector = new ArduinoConnector(portDescription, baudRate);
         encoder = new Encoder();
@@ -16,15 +18,26 @@ public class Arduino {
 
     public boolean openConnection(){
         boolean result = arduinoConnector.openConnection();
-        if (result) arduinoConnector.serialReadClear();
+        if (result){
+            arduinoConnector.serialReadClear();
+            connectionOpened = true;
+        }
+
         return result;
     }
 
     public void closeConnection(){
         arduinoConnector.closeConnection();
+        connectionOpened = false;
+    }
+
+    public boolean getConnection(){
+        return connectionOpened;
     }
 
     public Package nextPackage() throws IOException {
+        if (!getConnection()) throw new IOException("Arduino not connected");
+
         return new Package(decoder.nextPackage());
     }
 
