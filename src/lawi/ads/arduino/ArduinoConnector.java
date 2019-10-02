@@ -119,6 +119,24 @@ public class ArduinoConnector {
         return result;
     }
 
+    public byte[] serialReadBytesWaitTimeout(int count, int sleepMills, int timeout) throws IOException{
+        if (count <= 0) return new byte[0];
+        long timeStart = System.currentTimeMillis();
+
+        byte[] result = new byte[count];
+        while (getInputStream().available() < count) {
+            if (System.currentTimeMillis() >= timeStart + timeout) throw new IOException("Timeout expired (" + timeout + " ms)");
+            if (sleepMills == 0){
+                Thread.yield();
+            } else {
+                try{Thread.sleep(sleepMills);} catch(InterruptedException e){}
+            }
+        }
+
+        getInputStream().read(result);
+        return result;
+    }
+
     public String serialReadLine(){
         prepareSerialRead();
         Scanner in = new Scanner(getInputStream());

@@ -7,7 +7,8 @@ import java.util.*;
 
 public class Decoder {
 
-    private static final int SERIAL_READ_DELAY = 100;
+    private static final int SERIAL_READ_DELAY = 100; //Проверять входной буфер через каждые N миллисекунд
+    private static final int SERIAL_READ_TIMEOUT = 30*1000; //Максимальное время ожидания пакета данных в миллисекундах
 
     private final ArduinoConnector arduinoConnector;
     private final int P; //Константа для расчёта значения хеш-функции (должна быть больше 255)
@@ -23,7 +24,7 @@ public class Decoder {
 
     public Decoder(ArduinoConnector arduinoConnector, int P, int lenData, int blockSeparator) {
         if (arduinoConnector == null) throw new IllegalArgumentException("ArduinoConnector cannot be null");
-        //if (P <= 255) throw new IllegalArgumentException("P must be greater than 255");
+        if (P <= 255) throw new IllegalArgumentException("P must be greater than 255");
         if (lenData <= 0) throw new IllegalArgumentException("Length data must be greater than 0");
 
         this.arduinoConnector = arduinoConnector;
@@ -53,7 +54,7 @@ public class Decoder {
 
     private byte[] readBytes(int count) throws IOException{
         try {
-            byte[] result = arduinoConnector.serialReadBytesWait(count, SERIAL_READ_DELAY);
+            byte[] result = arduinoConnector.serialReadBytesWaitTimeout(count, SERIAL_READ_DELAY, SERIAL_READ_TIMEOUT);
             countReceiveBytes += result.length;
 
             return result;
