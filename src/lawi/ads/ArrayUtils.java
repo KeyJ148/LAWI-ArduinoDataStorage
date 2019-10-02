@@ -8,7 +8,6 @@ import java.util.List;
 
 public class ArrayUtils {
 
-
     public static String[] collectionStringToArray(Collection<String> collection){
         String[] result = new String[collection.size()];
         return collection.toArray(result);
