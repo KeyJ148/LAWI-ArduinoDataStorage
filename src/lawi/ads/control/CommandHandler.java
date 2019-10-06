@@ -28,7 +28,7 @@ public class CommandHandler {
         try {
             String[] commandArray = commandLine.split(" ");
             int type = Integer.parseInt(commandArray[0]);
-            String[] commandData = (commandArray.length < 2)? null : Arrays.copyOfRange(commandArray, 1, commandArray.length);
+            String[] commandData = (commandArray.length < 2)? new String[0] : Arrays.copyOfRange(commandArray, 1, commandArray.length);
 
             switchType(type, commandData, out);
         } catch (NumberFormatException e){
@@ -60,8 +60,8 @@ public class CommandHandler {
         for(int i=0; i<ports.length; i++){
             out.print(ports[i].getSystemPortName());
             if (i != ports.length - 1) out.print(", ");
-            else out.println();
         }
+        out.println();
     }
 
     private static void getStateDataKeeper(String[] command, PrintWriter out){
@@ -75,17 +75,13 @@ public class CommandHandler {
 
     private static void createDataKeeper(String[] command, PrintWriter out) throws FormatMessageException{
         if (command.length < 1) throw new FormatMessageException(1);
-        if (ArduinoDataStorage.dataKeeper == null){
-            out.println("DaraKeeper was not created");
-            return;
-        }
-        if (ArduinoDataStorage.dataKeeper.isWork()){
+        if (ArduinoDataStorage.dataKeeper != null && ArduinoDataStorage.dataKeeper.isWork()){
             out.println("DataKeeper work now");
             return;
         }
 
         ArduinoDataStorage.dataKeeper = new DataKeeper(
-                new Arduino(command[1], ArduinoDataStorage.baudRate, ArduinoDataStorage.P, Package.LENGTH, ArduinoDataStorage.blockSeparator));
+                new Arduino(command[0], ArduinoDataStorage.baudRate, ArduinoDataStorage.P, Package.LENGTH, ArduinoDataStorage.blockSeparator));
     }
 
     private static void stopDataKeeper(String[] command, PrintWriter out){
