@@ -1,2 +1,6 @@
 # LAWI-ArduinoDataStorage
-This is part of the [LAWI](https://github.com/users/KeyJ148/projects/1 "LAWI: Arduino Web Interface") project
+Это часть проекта по мониторингу параметров окружающей среды при помощи Arduino, Raspberry PI и датчиков BME280 и MHZ19b.  
+  
+Датчики BME280 и MHZ19b подключаются к Arduino и служат для измерения температуры, влажности, давления и содержания углекислого газа. Вместо Raspberry PI может использоваться любое устройство с USB-портом для подключения Arduino и возможностью развернуть веб-сервер и БД.  
+  
+В этом репозитории размещен сервис, устанавливаемый на Raspberry PI. Сервис является Java-программой, которая получает данные с Arduino по USB-порту и записывает их в БД. Репозиторий со скетчем, загружаемым на Arduino находится [здесь](https://github.com/KeyJ148/LAWI-ArduinoSensors "LAWI-ArduinoSensors"). Репозиторий с сайтом для вывода данных из БД на данный момент является приватным.
