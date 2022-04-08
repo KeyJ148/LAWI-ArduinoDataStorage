@@ -1,18 +1,16 @@
-package lawi.ads.arduino;
+package cc.abro.ape.arduino;
 
 import java.io.IOException;
 
 public class Arduino {
 
-    private ArduinoConnector arduinoConnector;
-    private Encoder encoder;
-    private Decoder decoder;
+    private final ArduinoConnector arduinoConnector;
+    private final Decoder decoder;
 
     private boolean connectionOpened = false;
 
     public Arduino(String portDescription, int baudRate, int P, int lenData, int blockSeparator){
         arduinoConnector = new ArduinoConnector(portDescription, baudRate);
-        encoder = new Encoder();
         decoder = new Decoder(arduinoConnector, P, lenData, blockSeparator);
     }
 

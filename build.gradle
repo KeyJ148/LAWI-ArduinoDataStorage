@@ -1,0 +1,38 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'cc.abro.ape'
+version '1.0.0-SNAPSHOT'
+
+compileJava.options.encoding = 'UTF-8'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.fazecast:jSerialComm:2.9.0'
+    implementation 'io.prometheus:simpleclient:0.15.0'
+    implementation 'io.prometheus:simpleclient_httpserver:0.15.0'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+}
+
+application {
+    mainClassName = 'cc.abro.ape.ArduinoPrometheusExporter'
+}
+
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'cc.abro.ape.ArduinoPrometheusExporter'
+        )
+    }
+}
+
+test {
+    useJUnitPlatform()
+}

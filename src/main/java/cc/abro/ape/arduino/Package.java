@@ -1,6 +1,6 @@
-package lawi.ads.arduino;
+package cc.abro.ape.arduino;
 
-import lawi.ads.ArrayUtils;
+import cc.abro.ape.ArrayUtils;
 
 import java.util.Arrays;
 

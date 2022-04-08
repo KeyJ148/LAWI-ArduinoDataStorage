@@ -1,9 +1,12 @@
-package lawi.ads.arduino;
+package cc.abro.ape.arduino;
 
+import cc.abro.ape.ArrayUtils;
 import com.fazecast.jSerialComm.SerialPort;
-import lawi.ads.ArrayUtils;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -14,12 +17,13 @@ public class ArduinoConnector {
 
     public ArduinoConnector(String portDescription, int baudRate) {
         comPort = SerialPort.getCommPort(portDescription);
-        comPort.setBaudRate(baudRate);
+        comPort.setComPortParameters(baudRate,8,1,0);
+        comPort.setComPortTimeouts(SerialPort.TIMEOUT_SCANNER,0,0);
     }
 
     public boolean openConnection(){
         boolean result = comPort.openPort();
-        try{ Thread.sleep(500); } catch (InterruptedException e) {}
+        System.out.println("Result open port: " + result);
         return result;
     }
 
@@ -174,7 +178,7 @@ public class ArduinoConnector {
 
     /* Вывод данных */
 
-    public void serialWrite(byte b) throws IOException{
+    public void serialWrite(byte b) throws IOException {
         prepareSerialWrite();
         getOutputStream().write(b);
         getOutputStream().flush();
